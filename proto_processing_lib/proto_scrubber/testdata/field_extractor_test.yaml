@@ -1,0 +1,23 @@
+type: google.api.Service
+config_version: 3
+name: field_extractor_test.googleapis.com
+title: Field Extractor Test API
+apis:
+- name: proto_processing_lib.scrubber.testing.FieldExtractorTestService
+
+documentation:
+  overview: |
+    (== suppress_warning quota-presence ==)
+    (== suppress_warning usage_manager-presence ==)
+    (== suppress_warning http-rest ==)
+    (== suppress_warning versioning-http-version-prefix ==)
+    (== suppress_warning documentation-presence ==)
+    (== suppress_warning legacy-contacts ==)
+    (== suppress_warning versioning-config ==)
+  summary:
+    Field Extractor Test
+
+backend:
+  rules:
+  - selector: '*'
+    address: <external>

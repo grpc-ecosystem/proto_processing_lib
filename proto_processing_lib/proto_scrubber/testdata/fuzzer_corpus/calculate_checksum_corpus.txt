@@ -1,0 +1,53 @@
+message_int64: -9223372036854775808
+message_double: -1.7e+308
+message_float: 0.0006790161
+message_enum: PENUM2
+repeated_int32: -2147483648
+repeated_int32: 2147483647
+repeated_int32: -2147483647
+repeated_int32: 2019
+repeated_int32: -1
+repeated_int64: 0
+repeated_uint64: 9223372036854775807
+repeated_double: 0.1
+repeated_string: "cat"
+repeated_string: "dog"
+repeated_enum: PENUM1
+repeated_enum: PENUM3
+repeated_enum: PENUM2
+repeated_enum: PENUM2
+repeated_enum: PENUM1
+message_embedded {
+  message_enum: PENUM2
+  timestamp {
+    seconds: 19992
+  }
+  wkt_float {
+    value: 8.5e-46
+  }
+  embedded2 {
+    message_int32: 1234
+    message_string: "checksum string"
+    embedded3 {
+      message_int32: 3
+      repeated_string: "checksum repeated_string"
+    }
+    embedded3 {
+      message_int32: 3
+      repeated_string: "repeated_string"
+    }
+  }
+}
+duration {
+  seconds: 73456789887654
+}
+wkt_double {
+  value: 1.23075755875986e-312
+}
+wkt_uint64 {
+  value: 3
+}
+wkt_uint32 {
+  value: 65535
+}
+message_sfixed64: 64871186038784

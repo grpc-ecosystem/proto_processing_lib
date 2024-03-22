@@ -1,0 +1,7 @@
+test_message {
+  any {
+    type_url: "type.googleapis.com/proto_processing_lib.scrubber.testing.ScrubberTestMessage"
+    value: "\202\002-\031\"\027\n\000\022\023\362\001\000\372\001\r\"\013\n\002],\022\005H\002\220\001\002"
+  }
+}
+field_checker_type: DEPTH_EXTENDED_CHECKER

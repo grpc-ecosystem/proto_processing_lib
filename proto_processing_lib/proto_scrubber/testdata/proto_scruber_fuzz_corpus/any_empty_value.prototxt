@@ -1,0 +1,5 @@
+test_message {
+  any {
+    [type.googleapis.com/proto_processing_lib.scrubber.testing.ScrubberTestMessage] { }
+  }
+}

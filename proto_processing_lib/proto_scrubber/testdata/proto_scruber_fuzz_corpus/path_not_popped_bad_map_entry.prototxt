@@ -1,0 +1,14 @@
+# Reproduces the case where path is incorrect when map entry has duplicated field 1.
+test_message {
+  status {
+    details {
+      type_url: "type.googleapis.com/proto_processing_lib.scrubber.testing.ScrubberTestMessage"
+      # Hard to reproduce a map with an invalid key value using C++ proto compiler.
+      # Instead, manually hand-serialized and placed in google.protobuf.Any to preserve it.
+      # This map has 2 entries with field number 1.
+      # Tag \012 = 1010 = (1 << 3) | 010 = Length-delimited field 1
+      value: "\232\001\025\372\001\022\"\020\n\004key1\012\bB\006value1"
+    }
+  }
+}
+field_checker_type: FULL_SCAN_CHECKER

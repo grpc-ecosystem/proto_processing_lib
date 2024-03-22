@@ -1,0 +1,21 @@
+message_int32: -32
+message_int64: -64
+str_data: "oneof string"
+repeated_int32: [-1, -2, -33]
+repeated_string: ["dog", "eat", "bones"]
+timestamp: {
+  seconds: 1
+  nanos: 123
+}
+message_embedded: {
+  message_enum: PENUM2
+  embedded2: {
+    message_string: "level 2"
+    embedded3: {
+      message_int32: 3
+      repeated_string: ["level 3a"]
+    }
+  }
+}
+
+

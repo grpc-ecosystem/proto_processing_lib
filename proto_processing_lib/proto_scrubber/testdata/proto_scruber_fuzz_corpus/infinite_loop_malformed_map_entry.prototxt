@@ -1,0 +1,15 @@
+# Reproduces b/160900506.
+test_message {
+  status {
+    details {
+      type_url: "type.googleapis.com/proto_processing_lib.scrubber.testing.ScrubberTestMessage"
+      # Hard to reproduce a map with an invalid key value using C++ proto compiler.
+      # Instead, manually hand-serialized `invalid_legacy_map_field` and placed in google.protobuf.Any to preserve it.
+      # This map has values with field number = 3 instead of 2.
+      # Tag \032 = 11010 = (11 << 3) | 010 = Length-delimited field 3
+      # Field 2 is completely missing at runtime, but is in the descriptor at compile time.
+      value: "\232\001\025\372\001\022\"\020\n\004key1\032\bB\006value1"
+    }
+  }
+}
+field_checker_type: FULL_SCAN_CHECKER

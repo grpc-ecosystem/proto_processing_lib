@@ -1,0 +1,169 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package proto_processing_lib.scrubber.testing;
+
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/rpc/status.proto";
+
+enum ScrubberTestEnum {
+  PENUM1 = 0;
+  PENUM2 = 1;
+  PENUM3 = 2;
+}
+
+message MapMessage {
+  string map_id = 1;
+
+  map<string, MapValue> properties = 2;
+  map<int32, int32> primitive_map = 3;
+  map<string, ScrubberTestEmbeddedMessage> message_map = 4;
+
+  // Emulates backwards-compatible map.
+  repeated ValidMapEntry valid_legacy_map_field = 5;
+  repeated InvalidMapEntry invalid_legacy_map_field = 6;
+}
+
+message MapValue {
+  // The values of the property. Contains at least one value.
+  repeated string value = 1;
+}
+
+message ValidMapEntry {
+  string key = 1;
+  ScrubberTestEmbeddedMessage value = 2;
+}
+
+message InvalidMapEntry {
+  reserved 2;
+
+  string key = 1;
+  ScrubberTestEmbeddedMessage value = 3;
+}
+
+message ScrubberTestEmbeddedMessage {
+  int32 message_int32 = 1;
+  int64 message_int64 = 2;
+  uint32 message_uint32 = 3;
+  uint64 message_uint64 = 4;
+  double message_double = 5;
+  float message_float = 6;
+  bool message_bool = 7;
+  string message_string = 8 [ctype = CORD];
+  ScrubberTestEnum message_enum = 9;
+  repeated int32 repeated_int32 = 10;
+  repeated int64 repeated_int64 = 11;
+  repeated uint32 repeated_uint32 = 12 [packed = true];
+  repeated uint64 repeated_uint64 = 13;
+  repeated double repeated_double = 14 [packed = true];
+  repeated float repeated_float = 15;
+  repeated bool repeated_bool = 16;
+  repeated string repeated_string = 17 [ctype = CORD];
+  repeated ScrubberTestEnum repeated_enum = 18 [packed = false];
+  repeated ScrubberTestEmbeddedMessage message_embedded = 19;
+  google.protobuf.Timestamp timestamp = 20;
+  google.protobuf.Duration duration = 21;
+  google.protobuf.DoubleValue wkt_double = 22;
+  google.protobuf.FloatValue wkt_float = 23;
+  google.protobuf.Int64Value wkt_int64 = 24;
+  google.protobuf.UInt64Value wkt_uint64 = 25;
+  google.protobuf.Int32Value wkt_int32 = 26;
+  google.protobuf.UInt32Value wkt_uint32 = 27;
+  google.protobuf.BoolValue wkt_bool = 28;
+  google.protobuf.StringValue wkt_string = 29;
+  google.protobuf.BytesValue wkt_bytes = 30;
+  MapMessage maps = 31;
+  SecondLevelEmbeddedMessage embedded2 = 32;
+  google.protobuf.Any any = 33;
+}
+
+message SecondLevelEmbeddedMessage {
+  int32 message_int32 = 1;
+  string message_string = 2 [ctype = CORD];
+  repeated ThirdLevelEmbeddedMessage embedded3 = 3;
+}
+
+message ThirdLevelEmbeddedMessage {
+  int32 message_int32 = 1;
+  repeated string repeated_string = 2 [ctype = CORD];
+  ScrubberTestEnum message_enum = 3;
+  repeated ScrubberTestEmbeddedMessage message_embedded = 4;
+}
+
+// Wire-compatible with ScrubberTestMessage, to test empty or partial map
+// entries serialization.
+message ScrubberTestMessageProto2Maps {
+  message MapMessageProto2Maps {
+    repeated ValidMapEntry message_map = 4;
+  }
+
+  MapMessageProto2Maps message_map = 32;
+}
+
+message ScrubberTestMessage {
+  int32 message_int32 = 1;
+  int64 message_int64 = 2;
+  uint32 message_uint32 = 3;
+  uint64 message_uint64 = 4;
+  double message_double = 5;
+  float message_float = 6;
+  bool message_bool = 7;
+  string message_string = 8 [ctype = CORD];
+  ScrubberTestEnum message_enum = 9;
+  repeated int32 repeated_int32 = 10 [packed = true];
+  repeated int64 repeated_int64 = 11;
+  repeated uint32 repeated_uint32 = 12;
+  repeated uint64 repeated_uint64 = 13;
+  repeated double repeated_double = 14;
+  repeated float repeated_float = 15 [packed = true];
+  repeated bool repeated_bool = 16;
+  repeated string repeated_string = 17 [ctype = CORD];
+  repeated ScrubberTestEnum repeated_enum = 18 [packed = true];
+  ScrubberTestEmbeddedMessage message_embedded = 19;
+  google.protobuf.Timestamp timestamp = 20;
+  google.protobuf.Duration duration = 21;
+  google.protobuf.DoubleValue wkt_double = 22;
+  google.protobuf.FloatValue wkt_float = 23;
+  google.protobuf.Int64Value wkt_int64 = 24;
+  google.protobuf.UInt64Value wkt_uint64 = 25;
+  google.protobuf.Int32Value wkt_int32 = 26;
+  google.protobuf.UInt32Value wkt_uint32 = 27;
+  google.protobuf.BoolValue wkt_bool = 28;
+  google.protobuf.StringValue wkt_string = 29;
+  google.protobuf.BytesValue wkt_bytes = 30;
+  int32 another_int32 = 31;
+  MapMessage message_map = 32;
+  google.protobuf.Struct message_struct = 33;
+  google.protobuf.Value struct_value = 34;
+  google.protobuf.ListValue struct_list_value = 35;
+  google.protobuf.Any any = 36;
+
+  // Some widely-used messages in google3 to fuzz on.
+  google.protobuf.FieldMask field_mask = 37;
+  google.longrunning.Operation operation = 38;
+  google.rpc.Status status = 39;
+}
+
+service FieldMaskTestService {
+  // A unary test RPC method sending and receiving ScrubberTestMessage
+  rpc Method1(ScrubberTestMessage) returns (ScrubberTestMessage);
+}

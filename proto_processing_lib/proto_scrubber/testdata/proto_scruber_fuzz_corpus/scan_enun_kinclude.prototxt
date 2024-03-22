@@ -1,0 +1,19 @@
+# Enum will be checked as `kInclude`.
+test_message {
+  message_embedded {
+    message_embedded {
+      message_embedded {
+        message_embedded {
+          message_embedded {
+            message_embedded {
+              message_embedded {
+                message_enum: PENUM2
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+field_checker_type: DEPTH_EXTENDED_CHECKER

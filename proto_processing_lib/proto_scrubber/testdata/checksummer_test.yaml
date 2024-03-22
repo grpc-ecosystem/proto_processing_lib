@@ -1,0 +1,40 @@
+type: google.api.Service
+config_version: 3
+name: checksummer_test_api.googleapis.com
+title: Checksummer test
+apis:
+- name: proto_processing_lib.scrubber.testing.ChecksummerTestService
+
+documentation:
+  overview: |
+    (== suppress_warning quota-presence ==)
+    (== suppress_warning usage_manager-presence ==)
+    (== suppress_warning http-rest ==)
+    (== suppress_warning versioning-http-version-prefix ==)
+    (== suppress_warning documentation-presence ==)
+    (== suppress_warning legacy-contacts ==)
+    (== suppress_warning versioning-config ==)
+  summary:
+    Checksummer test.
+
+backend:
+  rules:
+  - selector: '*'
+    address: <external>
+
+http:
+  rules:
+  - selector: proto_processing_lib.scrubber.testing.ChecksummerTestService.Method1
+    put: '/checksum'
+    body: '*'
+  - selector: proto_processing_lib.scrubber.testing.ChecksummerTestService.Method3
+    post: '/checksum'
+    body: '*'
+  - selector: proto_processing_lib.scrubber.testing.ChecksummerTestService.Method2
+    post: '/checksum/{msg.message_int32=*}'
+    body: '*'
+
+legacy:
+  rules:
+  - selector: '*'
+    enable_esf_checksum: true

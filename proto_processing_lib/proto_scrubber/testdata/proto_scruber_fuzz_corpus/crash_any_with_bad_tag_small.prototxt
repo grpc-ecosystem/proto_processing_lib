@@ -1,0 +1,14 @@
+# Reproduction test case added for nullptr dereference of google::protobuf::Field.
+# Small test case contains a single occurrence of the bug.
+test_message {
+  message_int64: 1
+  status {
+    details {
+      type_url: "type.googleapis.com/proto_processing_lib.scrubber.testing.ScrubberTestMessage"
+      # In this serialized value, there is a `google.protobuf.UInt32Value` message
+      # with field number `6`. Field number 6 does not exist in the source proto for the wrapper.
+      value: "\202\002\353\001\"\350\001\n\000\022\343\001)X9\264\310v\276\363?5&\021??\232\001\321\001)\000\370\000\000\000\000\000\000\232\001\304\001)\000\370\000\000\000\000\000\000\232\001\267\001)\000\000\000\000\000\000\000\002\232\001\252\001 \200\214\260\006)\000\000\000\000\000\000\000A\232\001\230\001)\000\000\000\000\000\000\000\002BBtype.googleapis.com/proto_processing_lib.scrubber.testing.ScrubberTestMessageH\001\202\002F\032D\"B)\000te12D\"\"\332\0016111111111111111111111111111111111111111111111111111111"
+    }
+  }
+}
+field_checker_type: DEPTH_LIMITED_CHECKER

@@ -1,0 +1,158 @@
+message_int32: -32
+message_int64: -64
+message_uint32: 32
+message_uint64: 64
+message_double: 1.234
+message_float: 0.567
+message_bool: true
+message_string: "abc"
+message_enum: PENUM2
+str_data: "oneof string"
+repeated_int32: [-1, -2, -33]
+repeated_int64: [-11, -12, -133]
+repeated_uint32: [1, 2, 33]
+repeated_uint64: [11, 12, 133]
+repeated_double: [1.234, 2.123, 1346]
+repeated_float: [0.1234, 902.67898]
+repeated_bool: [true, false]
+repeated_string: ["dog", "eat", "bones"]
+repeated_enum: [PENUM2, PENUM3, PENUM1]
+timestamp: {
+  seconds: 1
+  nanos: 123
+}
+duration: {
+  seconds: 2
+  nanos: 987
+}
+wkt_double: { value: 12.345 }
+wkt_float: { value: 10.145 }
+wkt_int64: { value: -2 }
+wkt_uint64: { value: 3 }
+wkt_int32: { value: -4 }
+wkt_uint32: { value: 5 }
+wkt_bool: { value: true }
+wkt_string: { value: "def" }
+wkt_bytes: { value: "ddd" }
+message_embedded: {
+  message_int32: -32
+  message_int64: -64
+  message_uint32: 32
+  message_uint64: 64
+  message_double: 1.234
+  message_float: 0.567
+  message_bool: true
+  message_string: "level 1"
+  message_enum: PENUM2
+  repeated_int32: [-1, -2, -33]
+  repeated_int64: [-11, -12, -133]
+  repeated_uint32: [1, 2, 33]
+  repeated_uint64: [11, 12, 133]
+  repeated_double: [1.234, 2.123, 1346]
+  repeated_float: [0.1234, 902.67898]
+  repeated_bool: [true, false]
+  repeated_string: ["dog", "eat", "bones"]
+  repeated_enum: [PENUM2, PENUM3, PENUM1]
+  timestamp: {
+    seconds: 1
+    nanos: 123
+  }
+  duration: {
+    seconds: 2
+    nanos: 987
+  }
+  wkt_double: { value: 12.345 }
+  wkt_float: { value: 10.145 }
+  wkt_int64: { value: -2 }
+  wkt_uint64: { value: 3 }
+  wkt_int32: { value: -4 }
+  wkt_uint32: { value: 5 }
+  wkt_bool: { value: true }
+  wkt_string: { value: "def" }
+  wkt_bytes: { value: "ddd" }
+  int_data: 3258
+  embedded2: {
+    message_int32: 2
+    message_string: "level 2"
+    embedded3: {
+      message_int32: 3
+      repeated_string: ["level 3a"]
+    },
+    embedded3: {
+      message_enum: PENUM2
+      repeated_string: ["level 3b"]
+    }
+  }
+  maps: {
+    map_id: "map test"
+    properties: {
+      key: "key_1"
+      value: {
+        value: ["New", "England", "Patriots"]
+      }
+    }
+    properties: {
+      key: "key_2"
+      value: {
+        value: ["Tom", "Brady"]
+      }
+    }
+    properties: {
+      key: ""
+      value: {
+        value: ["Super", "Bowl"]
+      }
+    }
+    primitive_map: {
+      key: 123
+      value: 456
+    }
+    primitive_map: {
+      key: 12
+      value: 789
+    }
+    message_map: {
+      key: "msg_key1"
+      value: {
+        message_int32: -32
+        message_int64: -64
+        maps: {
+          map_id: "nested map"
+          properties: {
+            key: "nested_key1"
+            value: {
+              value: ["Intercepted", "ball"]
+            }
+          }
+          properties: {
+            key: "nested_key11"
+            value: {
+              value: ["Deflated", "ball"]
+            }
+          }
+        }
+      }
+    }
+    message_map: {
+      key: "msg_key2"
+      value: {
+        repeated_int32: [-1, -2, -33]
+        maps: {
+          map_id: "nested map"
+          properties: {
+            key: "nested_key2"
+            value: {
+              value: ["full", "back"]
+            }
+          }
+          properties: {
+            key: "][{},!@#$%^&*()\"',<>?/\\"
+            value: {
+              value: ["running", "back"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

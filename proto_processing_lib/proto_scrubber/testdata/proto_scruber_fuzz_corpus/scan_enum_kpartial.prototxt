@@ -1,0 +1,7 @@
+# Enum will be checked as `kPartial`, covering the special handling logic.
+test_message {
+  message_embedded {
+    message_enum: PENUM2
+  }
+}
+field_checker_type: FULL_SCAN_CHECKER

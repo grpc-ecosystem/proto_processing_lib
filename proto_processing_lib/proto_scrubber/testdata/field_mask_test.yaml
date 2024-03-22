@@ -1,0 +1,38 @@
+type: google.api.Service
+config_version: 3
+name: field_mask_scrubber_test_api.googleapis.com
+title: FieldMask scrubbing test
+apis:
+- name: proto_processing_lib.scrubber.testing.FieldMaskTestService
+
+documentation:
+  overview: |
+    (== suppress_warning quota-presence ==)
+    (== suppress_warning usage_manager-presence ==)
+    (== suppress_warning http-rest ==)
+    (== suppress_warning versioning-http-version-prefix ==)
+    (== suppress_warning documentation-presence ==)
+    (== suppress_warning legacy-contacts ==)
+    (== suppress_warning versioning-config ==)
+  summary:
+    FieldMask scrubbing test.
+
+backend:
+  rules:
+  - selector: '*'
+    address: <external>
+
+http:
+  rules:
+  - selector: proto_processing_lib.scrubber.testing.FieldMaskTestService.Method1
+    put: '/fieldMask'
+    body: '*'
+    additional_bindings:
+    - post: '/fieldMask'
+      body: '*'
+
+context:
+  rules:
+  - selector: '*'
+    requested:
+    - google.rpc.context.FieldMaskContext
