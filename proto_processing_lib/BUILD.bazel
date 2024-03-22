@@ -1,0 +1,43 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "factory_helper",
+    hdrs = [
+        "factory_helper.h",
+    ],
+    deps = [
+        ":interface_util",
+        "//proto_processing_lib/proto_scrubber:field_checker_interface",
+        "//proto_processing_lib/proto_scrubber:field_mask_tree",
+        "//proto_processing_lib/proto_scrubber:unknown_field_checker",
+    ],
+)
+
+cc_library(
+    name = "interface_util",
+    hdrs = [
+        "interface_util.h",
+    ],
+    deps = [
+        "//proto_processing_lib/proto_scrubber:field_checker_interface",
+        "//proto_processing_lib/proto_scrubber:field_mask_node",
+        "//proto_processing_lib/proto_scrubber:proto_scrubber_enums",
+        "@com_google_absl//absl/status",
+        "@com_google_proto_field_extraction//proto_field_extraction/message_data:message_data_interface",
+    ],
+)
+
