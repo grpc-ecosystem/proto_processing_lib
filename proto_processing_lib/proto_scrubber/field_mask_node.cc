@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/log/absl_log.h"
 #include "absl/log/log.h"
 #include "absl/status/status.h"
 #include "absl/strings/escaping.h"
@@ -65,7 +66,7 @@ absl::Status FieldMaskNode::AddChild(
         "Error compiling FieldMask.  Failed to create a FieldMaskNode for field"
         " '",
         name, "'.");
-    VLOG(3) << message;
+    ABSL_LOG(INFO) << message;
     return absl::Status(absl::StatusCode::kInternal, message);
   }
   if (map_key.empty()) {
@@ -114,7 +115,7 @@ absl::Status FieldMaskNode::ParseFieldNameAndMapKey(const std::string& segment,
     const std::string message =
         absl::StrCat("Error compiling FieldMask. Cannot un-escape value \"",
                      escaped_map_key, "\". Error: ", error);
-    VLOG(3) << message;
+    ABSL_LOG(INFO) << message;
     return absl::Status(absl::StatusCode::kInvalidArgument, message);
   }
   return ::absl::OkStatus();
@@ -131,13 +132,13 @@ absl::Status FieldMaskNode::InsertField(
   if (type_ == nullptr) {
     const std::string message =
         "Error compiling FieldMask. Non-message types must be leaf nodes.";
-    VLOG(3) << message;
+    ABSL_LOG(INFO) << message;
     return absl::Status(absl::StatusCode::kInvalidArgument, message);
   }
 
   // The current node is a leaf node already. There is no need to keep creating
   // child nodes. For example, if "a.b" has already been added to a FieldMask
-  // tree, all the sub-fields of "b" are already included and there is no need
+  // tree, all the sub fields of "b" are already included and there is no need
   // to add masks like "a.b.c".
   if (is_leaf_) {
     return ::absl::OkStatus();
@@ -151,7 +152,7 @@ absl::Status FieldMaskNode::InsertField(
     const std::string message =
         absl::StrCat("Error compiling FieldMask. Cannot find field '",
                      ToSnakeCase(*current), "'.");
-    VLOG(3) << message;
+    ABSL_LOG(INFO) << message;
     return absl::Status(absl::StatusCode::kInvalidArgument, message);
   }
 
@@ -159,7 +160,7 @@ absl::Status FieldMaskNode::InsertField(
   if (field == nullptr) {
     const std::string message = absl::StrCat(
         "Error compiling FieldMask. Cannot find field '", field_name, "'.");
-    VLOG(3) << message;
+    ABSL_LOG(INFO) << message;
     return absl::Status(absl::StatusCode::kInvalidArgument, message);
   }
 
@@ -183,7 +184,7 @@ absl::Status FieldMaskNode::InsertField(
       const std::string message =
           absl::StrCat("Error compiling FieldMask. Cannot resolve type '",
                        field->type_url(), "'.");
-      VLOG(3) << message;
+      ABSL_LOG(INFO) << message;
       return absl::Status(absl::StatusCode::kInternal, message);
     }
 
@@ -195,7 +196,7 @@ absl::Status FieldMaskNode::InsertField(
           "Error compiling FieldMask. '", field_name,
           "' is not a map field. Only map key values are supported in "
           "FieldMask paths.");
-      VLOG(3) << message;
+      ABSL_LOG(INFO) << message;
       return absl::Status(absl::StatusCode::kInvalidArgument, message);
     }
   }
