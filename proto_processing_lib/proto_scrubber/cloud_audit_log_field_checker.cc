@@ -51,7 +51,7 @@ FieldCheckResults CloudAuditLogFieldChecker::CheckField(
     const std::vector<std::string>& path,
     const google::protobuf::Field* field) const {
   if (!field_mask_tree_->status().ok()) {
-    LOG(DFATAL)
+    ABSL_LOG(FATAL)
         << "The Cloud Audit Log field checker is broken and cannot be used to"
            "check fields. All fields will be excluded.";
     return FieldCheckResults::kExclude;
