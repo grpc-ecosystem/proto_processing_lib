@@ -82,7 +82,7 @@ class FieldMaskNode {
   std::unique_ptr<FieldMaskNode> Intersect(const FieldMaskNode& other) const;
 
   // Whether there is a child node with given field name.
-  const bool HasChild(absl::string_view field_name) const;
+  bool HasChild(absl::string_view field_name) const;
 
   // Finds the child node for the given field name. Returns nullptr if no
   // children exist for the field name.

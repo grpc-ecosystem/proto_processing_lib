@@ -227,7 +227,7 @@ absl::Status FieldMaskNode::InsertValueField(
   return AddChild(value, type_, "", false, next, end);
 }
 
-const bool FieldMaskNode::HasChild(absl::string_view field_name) const {
+bool FieldMaskNode::HasChild(absl::string_view field_name) const {
   return children_.contains(field_name);
 }
 

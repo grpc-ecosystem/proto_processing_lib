@@ -68,7 +68,7 @@ class FieldCheckerInterface {
   // Can be used for stack overflow protection by each field checker.
   virtual FieldCheckResults CheckField(const std::vector<std::string>& path,
                                        const google::protobuf::Field* field,
-                                       const int field_depth) const {
+                                       const int /*field_depth*/) const {
     return CheckField(path, field);
   }
 
@@ -77,7 +77,7 @@ class FieldCheckerInterface {
   virtual FieldCheckResults CheckField(
       const std::vector<std::string>& path,
       const google::protobuf::Field* field, const int field_depth,
-      const google::protobuf::Type* parent_type) const {
+      const google::protobuf::Type* /*parent_type*/) const {
     return CheckField(path, field, field_depth);
   }
 
