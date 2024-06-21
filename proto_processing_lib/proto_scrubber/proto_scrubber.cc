@@ -727,7 +727,6 @@ absl::StatusOr<uint32_t> ProtoScrubber::ScanMapEntry(
   int current_position = start_position;
   bool is_key_found = false;
   bool is_value_added = false;
-  bool is_value_null = true;
   FieldFilters excluded_by_filter = FieldFilters::Unspecified;
   uint32_t tag = input_stream->ReadTag();
   while (tag != 0) {
@@ -761,7 +760,6 @@ absl::StatusOr<uint32_t> ProtoScrubber::ScanMapEntry(
         }
       }
     } else if (field_number == 2) {
-      is_value_null = false;
       if (check_result == FieldCheckResults::kExclude) {
         IncreaseFieldDroppedCount(map_type.name(), field_number,
                                   scrubber_context_, excluded_by_filter);

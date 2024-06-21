@@ -84,6 +84,7 @@ class ProtoScrubber : public ProtoScrubberInterface {
   virtual absl::StatusOr<uint32_t> ScrubWithChecksum(
       google::protobuf::field_extraction::MessageData* message) const override;
 
+  using ProtoScrubberInterface::CheckField;
   // Checks if a field should be kept by calling field_checkers_ and returns the
   // aggregated result. If one of them returns EXCLUDE, the aggregated result is
   // EXCLUDE. If all of them return INCLUDE, the aggregated result is INCLUDE.

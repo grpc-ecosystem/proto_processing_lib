@@ -50,6 +50,8 @@ class CloudAuditLogFieldChecker
   // and "c", and the message "a" can include only field "b".
   absl::Status AddOrIntersectFieldPaths(
       const std::vector<std::string>& paths) override;
+
+  using CloudAuditLogFieldCheckerInterface::CheckField;
   // Decides whether the given field path is included, partially included, or
   // excluded.
   //
