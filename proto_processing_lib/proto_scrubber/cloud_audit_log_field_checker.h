@@ -64,7 +64,7 @@ class CloudAuditLogFieldChecker
       const google::protobuf::Field* field) const override;
   bool SupportAny() const override { return false; }
   FieldCheckResults CheckType(
-      const google::protobuf::Type* type) const override {
+      const google::protobuf::Type* /*type*/) const override {
     return FieldCheckResults::kInclude;
   }
   FieldFilters FilterName() const override {
