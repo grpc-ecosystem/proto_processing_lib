@@ -36,6 +36,8 @@ class UnknownFieldCheckerTestPeer;
 // message.
 class UnknownFieldChecker : public FieldCheckerInterface {
  public:
+  using FieldCheckerInterface::CheckField;
+  
   // This type is neither copyable nor movable.
   UnknownFieldChecker(const UnknownFieldChecker&) = delete;
   UnknownFieldChecker& operator=(const UnknownFieldChecker&) = delete;
