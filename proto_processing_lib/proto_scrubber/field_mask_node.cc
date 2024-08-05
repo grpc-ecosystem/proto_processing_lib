@@ -31,12 +31,37 @@
 #include "src/google/protobuf/util/converter/utility.h"
 #include "proto_processing_lib/proto_scrubber/constants.h"
 #include "proto_processing_lib/proto_scrubber/utility.h"
-#include "ortools/base/map_util.h"
 #include "ocpdiag/core/compat/status_macros.h"
 
 namespace proto_processing_lib::proto_scrubber {
 
+
+namespace {
+
 using google::protobuf::util::converter::ToSnakeCase;
+
+void InsertIfNotPresent(
+    absl::flat_hash_map<absl::string_view, const google::protobuf::Field*>&
+        child_name_child_map,
+    absl::string_view field_name, const google::protobuf::Field* field) {
+  if (!child_name_child_map.contains(field_name)) {
+    child_name_child_map.emplace(field_name, field);
+  }
+}
+
+const google::protobuf::Field* FindWithDefault(
+    absl::flat_hash_map<absl::string_view, const google::protobuf::Field*>&
+        child_name_child_map,
+    absl::string_view field_name) {
+  const auto& it = child_name_child_map.find(field_name);
+  if (it == child_name_child_map.end()) {
+    google::protobuf::Field* field = nullptr;
+    return field;
+  }
+  return it->second;
+}
+
+}  // namespace
 
 FieldMaskNode::FieldMaskNode(
     const google::protobuf::Type* type, bool is_leaf, bool is_map,
@@ -81,7 +106,7 @@ const google::protobuf::Field* FieldMaskNode::FindChildField(
   // method is called).
   if (child_name_child_map_.empty()) {
     for (const google::protobuf::Field& field : type_->fields()) {
-      gtl::InsertIfNotPresent(&child_name_child_map_, field.name(), &field);
+      InsertIfNotPresent(&child_name_child_map_, field.name(), &field);
     }
       if (type_->name() == kStructType || type_->name() == kStructValueType ||
           type_->name() == kStructListValueType) {
@@ -89,16 +114,15 @@ const google::protobuf::Field* FieldMaskNode::FindChildField(
         // A Struct value can be List. A List value can be Struct.
         for (const google::protobuf::Field& field :
              type_finder_(kStructTypeUrl)->fields()) {
-          gtl::InsertIfNotPresent(&child_name_child_map_, field.name(), &field);
+          InsertIfNotPresent(&child_name_child_map_, field.name(), &field);
         }
         for (const google::protobuf::Field& field :
              type_finder_(kStructListValueTypeUrl)->fields()) {
-          gtl::InsertIfNotPresent(&child_name_child_map_, field.name(), &field);
+          InsertIfNotPresent(&child_name_child_map_, field.name(), &field);
         }
       }
-
   }
-  return gtl::FindWithDefault(child_name_child_map_, field_name);
+  return FindWithDefault(child_name_child_map_, field_name);
 }
 
 absl::Status FieldMaskNode::ParseFieldNameAndMapKey(const std::string& segment,

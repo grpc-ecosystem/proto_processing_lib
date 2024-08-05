@@ -50,13 +50,6 @@ http_archive(
 )
 
 http_archive(
-    name = "com_google_ortools",
-    sha256 = "054d9517fc6c83f15150c93ef1c2c674ffd7d4a0d1fdc78f6ef8bc3e25c2e339",
-    strip_prefix = "or-tools-9.7",
-    url = "https://github.com/google/or-tools/archive/refs/tags/v9.7.tar.gz",
-)
-
-http_archive(
     name = "com_google_proto_field_extraction",
     strip_prefix = "proto-field-extraction-e808da3acf5bd6d518e19e8afa20b4a9d0b2b599",  # Mar 20, 2024
     url = "https://github.com/grpc-ecosystem/proto-field-extraction/archive/e808da3acf5bd6d518e19e8afa20b4a9d0b2b599.tar.gz",

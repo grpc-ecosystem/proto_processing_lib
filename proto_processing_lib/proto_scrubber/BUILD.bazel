@@ -1,4 +1,3 @@
-
 # Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,17 +80,14 @@ cc_library(
     deps = [
         ":constants",
         ":utility",
-        "@com_google_protobuf//:cc_wkt_protos",
-        "@com_google_protoconverter//:all",
         "@com_google_absl//absl/container:flat_hash_map",
         "@com_google_absl//absl/flags:flag",
         "@com_google_absl//absl/log",
         "@com_google_absl//absl/status",
         "@com_google_absl//absl/strings",
+        "@com_google_protobuf//:cc_wkt_protos",
+        "@com_google_protoconverter//:all",
         "@ocp//ocpdiag/core/compat:status_macros",
-        # Use OR-Tools map_util and container_loggings from gtl.
-        # Warning: May not support all functionalities.
-        "@com_google_ortools//ortools/base:map_util",
     ],
 )
 
@@ -174,15 +170,12 @@ cc_library(
     deps = [
         ":field_checker_interface",
         ":field_mask_node",
-        "@com_google_protobuf//:cc_wkt_protos",
         "//proto_processing_lib:factory_helper",
         "//proto_processing_lib:interface_util",
         "@com_google_absl//absl/container:flat_hash_map",
         "@com_google_absl//absl/log",
         "@com_google_absl//absl/status",
-        # Use OR-Tools map_util and container_loggings from gtl.
-        # Warning: May not support all functionalities.
-        "@com_google_ortools//ortools/base:map_util",
+        "@com_google_protobuf//:cc_wkt_protos",
     ],
 )
 
@@ -426,4 +419,3 @@ cc_test(
         "@ocp//ocpdiag/core/testing:status_matchers",
     ],
 )
-
