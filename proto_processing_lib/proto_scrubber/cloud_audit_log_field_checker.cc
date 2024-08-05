@@ -32,16 +32,6 @@ namespace {
 // Returns pointer to message type name, or nullptr if field isn't a message or
 // has an unknown type. Caller does not own returned pointer.
 const std::string* GetMessageTypeName(const FieldMaskNode* node);
-
-const FieldMaskNode* FindPtrOrNull(
-    absl::flat_hash_map<std::string, const FieldMaskNode*> type_to_node,
-    const std::string& type_name) {
-  const auto& it = type_to_node.find(type_name);
-  if (it == type_to_node.end()) {
-    return nullptr;
-  }
-  return it->second;
-}
 }  // namespace
 
 CloudAuditLogFieldChecker::CloudAuditLogFieldChecker(
@@ -78,7 +68,9 @@ FieldCheckResults CloudAuditLogFieldChecker::CheckField(
     const std::string* type_name = GetMessageTypeName(current_node);
 
     if (type_name != nullptr) {
-      const FieldMaskNode* found_node = FindPtrOrNull(type_to_node, *type_name);
+      const auto& it = type_to_node.find(*type_name);
+      const FieldMaskNode* found_node =
+          it != type_to_node.end() ? it->second : nullptr;
       if (found_node == nullptr) {
         // Keep track of this message type in case it's cyclic.
         type_to_node.emplace(*type_name, current_node);
