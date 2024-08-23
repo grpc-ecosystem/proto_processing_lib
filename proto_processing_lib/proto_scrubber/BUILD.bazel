@@ -164,9 +164,9 @@ cc_library(
 )
 
 cc_library(
-    name = "cloud_audit_log_field_checker",
-    srcs = ["cloud_audit_log_field_checker.cc"],
-    hdrs = ["cloud_audit_log_field_checker.h"],
+    name = "field_mask_path_checker",
+    srcs = ["field_mask_path_checker.cc"],
+    hdrs = ["field_mask_path_checker.h"],
     deps = [
         ":field_checker_interface",
         ":field_mask_node",
@@ -180,15 +180,15 @@ cc_library(
 )
 
 proto_descriptor_set(
-    name = "cloud_audit_log_field_checker_test_proto_descriptor",
+    name = "field_mask_path_checker_test_proto_descriptor",
     deps = [
-        ":cloud_audit_log_field_checker_test_proto",
+        ":field_mask_path_checker_test_proto",
     ],
 )
 
 proto_library(
-    name = "cloud_audit_log_field_checker_test_proto",
-    srcs = ["testdata/cloud_audit_log_field_checker_test.proto"],
+    name = "field_mask_path_checker_test_proto",
+    srcs = ["testdata/field_mask_path_checker_test.proto"],
     deps = [
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:timestamp_proto",
@@ -197,8 +197,8 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "cloud_audit_log_field_checker_test_cc_proto",
-    deps = [":cloud_audit_log_field_checker_test_proto"],
+    name = "field_mask_path_checker_test_cc_proto",
+    deps = [":field_mask_path_checker_test_proto"],
 )
 
 cc_library(
@@ -345,14 +345,14 @@ cc_test(
 )
 
 cc_test(
-    name = "cloud_audit_log_field_checker_test",
-    srcs = ["cloud_audit_log_field_checker_test.cc"],
+    name = "field_mask_path_checker_test",
+    srcs = ["field_mask_path_checker_test.cc"],
     data = [
-        ":cloud_audit_log_field_checker_test_proto_descriptor",
+        ":field_mask_path_checker_test_proto_descriptor",
     ],
     deps = [
-        ":cloud_audit_log_field_checker",
         ":field_checker_interface",
+        ":field_mask_path_checker",
         ":utility",
         "@com_google_absl//absl/functional:bind_front",
         "@com_google_absl//absl/status",
