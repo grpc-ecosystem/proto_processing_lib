@@ -120,7 +120,7 @@ message TestMessage {
   map<int64, TestEmbeddedMessage> map_embedded_message = 32;
 }
 
-service CloudAuditLogService {
+service FieldMaskPathCheckerTestService {
   // Test method.
   rpc TestMethod(TestMessage) returns (TestMessage);
 }

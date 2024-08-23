@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "proto_processing_lib/proto_scrubber/cloud_audit_log_field_checker.h"
+#include "proto_processing_lib/proto_scrubber/field_mask_path_checker.h"
 
 #include <functional>
 #include <memory>
@@ -38,43 +38,43 @@ namespace testing {
 using ::absl::bind_front;
 using ::google::protobuf::Type;
 using ::google::protobuf::field_extraction::testing::TypeHelper;
-using ::proto_processing_lib::proto_scrubber::CloudAuditLogFieldChecker;
+using ::proto_processing_lib::proto_scrubber::FieldMaskPathChecker;
 using proto_processing_lib::proto_scrubber::FieldCheckResults;
 using ::ocpdiag::testing::StatusIs;
 
-class CloudAuditLogFieldCheckerTest : public ::testing::Test {
+class FieldMaskPathCheckerTest : public ::testing::Test {
  protected:
   void SetUp() override {
     std::string descriptor_path = GetTestDataFilePath(
         "proto_scrubber/"
-        "cloud_audit_log_field_checker_test_proto_descriptor.pb");
+        "field_mask_path_checker_test_proto_descriptor.pb");
 
     auto status = TypeHelper::Create(descriptor_path);
     ASSERT_OK(status);
     type_helper_ = std::move(status.value());
 
-    type_finder_ = bind_front(&CloudAuditLogFieldCheckerTest::FindType, this);
+    type_finder_ = bind_front(&FieldMaskPathCheckerTest::FindType, this);
 
     // Resolve the pointer to the type of root message.
     root_type_ = type_finder_(
         "type.googleapis.com/"
         "proto_processing_lib.scrubber.log.testing.TestMessage");
 
-    // Create CloudAuditLogFieldChecker instance.
-    cloud_audit_log_field_checker_ =
-        std::make_unique<CloudAuditLogFieldChecker>(root_type_, type_finder_);
+    // Create FieldMaskPathChecker instance.
+    field_mask_path_checker_ =
+        std::make_unique<FieldMaskPathChecker>(root_type_, type_finder_);
   }
 
   absl::Status AddOrIntersectPaths(const std::vector<std::string>& paths) {
-    return cloud_audit_log_field_checker_->AddOrIntersectFieldPaths(paths);
+    return field_mask_path_checker_->AddOrIntersectFieldPaths(paths);
   }
 
   FieldCheckResults CheckField(const std::vector<std::string>& path) {
-    return cloud_audit_log_field_checker_->CheckField(path, nullptr);
+    return field_mask_path_checker_->CheckField(path, nullptr);
   }
 
-  CloudAuditLogFieldChecker* cloud_audit_log_field_checker() {
-    return cloud_audit_log_field_checker_.get();
+  FieldMaskPathChecker* cloud_audit_log_field_checker() {
+    return field_mask_path_checker_.get();
   }
 
   const Type* root_type() { return root_type_; }
@@ -95,10 +95,10 @@ class CloudAuditLogFieldCheckerTest : public ::testing::Test {
   // A TypeHelper for testing.
   std::unique_ptr<TypeHelper> type_helper_ = nullptr;
   std::function<const Type*(const std::string&)> type_finder_;
-  std::unique_ptr<CloudAuditLogFieldChecker> cloud_audit_log_field_checker_;
+  std::unique_ptr<FieldMaskPathChecker> field_mask_path_checker_;
 };
 
-TEST_F(CloudAuditLogFieldCheckerTest, NormalPathTests) {
+TEST_F(FieldMaskPathCheckerTest, NormalPathTests) {
   ASSERT_OK(AddOrIntersectPaths({"singular_int32", "repeated_enum",
                                  "message_embedded.embedded2.embedded3"}));
 
@@ -125,7 +125,7 @@ TEST_F(CloudAuditLogFieldCheckerTest, NormalPathTests) {
             FieldCheckResults::kExclude);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, NormalPathTestsLeafAsMap) {
+TEST_F(FieldMaskPathCheckerTest, NormalPathTestsLeafAsMap) {
   ASSERT_OK(AddOrIntersectPaths({"message_embedded.message_map.properties"}));
 
   EXPECT_EQ(CheckField({"message_embedded", "message_map", "properties"}),
@@ -138,7 +138,7 @@ TEST_F(CloudAuditLogFieldCheckerTest, NormalPathTestsLeafAsMap) {
             FieldCheckResults::kInclude);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, NormalPathTestsNonLeafAsMap) {
+TEST_F(FieldMaskPathCheckerTest, NormalPathTestsNonLeafAsMap) {
   ASSERT_OK(AddOrIntersectPaths(
       {"message_embedded.message_map.properties.repeated_value"}));
 
@@ -152,7 +152,7 @@ TEST_F(CloudAuditLogFieldCheckerTest, NormalPathTestsNonLeafAsMap) {
       FieldCheckResults::kPartial);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, CyclicPath) {
+TEST_F(FieldMaskPathCheckerTest, CyclicPath) {
   // Corresponding field mask tree:
   //  message_embedded ------------ embedded2 -- embedded3 -- message_embedded
   //         |                          |
@@ -216,7 +216,7 @@ TEST_F(CloudAuditLogFieldCheckerTest, CyclicPath) {
             FieldCheckResults::kExclude);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, CyclicPathTestsLeafAsMap) {
+TEST_F(FieldMaskPathCheckerTest, CyclicPathTestsLeafAsMap) {
   ASSERT_OK(AddOrIntersectPaths({"message_embedded.map_embedded2"}));
 
   EXPECT_EQ(CheckField({"message_embedded", "map_embedded2", "embedded3"}),
@@ -227,7 +227,7 @@ TEST_F(CloudAuditLogFieldCheckerTest, CyclicPathTestsLeafAsMap) {
       FieldCheckResults::kExclude);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, CyclicPathTestsNonLaefAsMap) {
+TEST_F(FieldMaskPathCheckerTest, CyclicPathTestsNonLaefAsMap) {
   ASSERT_OK(AddOrIntersectPaths({"map_embedded_message.message_embedded",
                                  "map_embedded_message.embedded2.embedded3",
                                  "singular_int64"}));
@@ -258,7 +258,7 @@ TEST_F(CloudAuditLogFieldCheckerTest, CyclicPathTestsNonLaefAsMap) {
             FieldCheckResults::kExclude);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, NoPathsAdded) {
+TEST_F(FieldMaskPathCheckerTest, NoPathsAdded) {
   EXPECT_EQ(CheckField({"singular_double"}), FieldCheckResults::kInclude);
   EXPECT_EQ(CheckField({"message_embedded"}), FieldCheckResults::kInclude);
   EXPECT_EQ(CheckField({"map_embedded_message"}), FieldCheckResults::kInclude);
@@ -268,14 +268,14 @@ TEST_F(CloudAuditLogFieldCheckerTest, NoPathsAdded) {
             FieldCheckResults::kInclude);
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, BrokenFieldChecker) {
+TEST_F(FieldMaskPathCheckerTest, BrokenFieldChecker) {
   ASSERT_THAT(AddOrIntersectPaths({"map_embedded_unknown.message_embedded"}),
               StatusIs(
                 absl::StatusCode::kInvalidArgument
                   ));
 }
 
-TEST_F(CloudAuditLogFieldCheckerTest, CheckType) {
+TEST_F(FieldMaskPathCheckerTest, CheckType) {
   EXPECT_EQ(cloud_audit_log_field_checker()->CheckType(nullptr),
             FieldCheckResults::kInclude);
 

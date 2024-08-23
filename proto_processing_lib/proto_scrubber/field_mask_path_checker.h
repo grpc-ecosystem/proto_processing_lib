@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef THIRD_PARTY_PROTO_PROCESSING_LIB_SRC_PROTO_SCRUBBER_CLOUD_AUDIT_LOG_FIELD_CHECKER_H_
-#define THIRD_PARTY_PROTO_PROCESSING_LIB_SRC_PROTO_SCRUBBER_CLOUD_AUDIT_LOG_FIELD_CHECKER_H_
+#ifndef THIRD_PARTY_PROTO_PROCESSING_LIB_SRC_PROTO_SCRUBBER_FIELD_MASK_PATH_CHECKER_H_
+#define THIRD_PARTY_PROTO_PROCESSING_LIB_SRC_PROTO_SCRUBBER_FIELD_MASK_PATH_CHECKER_H_
 
 #include <functional>
 #include <memory>
@@ -34,16 +34,16 @@ namespace proto_processing_lib::proto_scrubber {
 // The implementation does not support field mask path with map keys (e.g.
 // "message.primitive_map[\"123\"].message_embedded") because the field mask
 // paths generated for Cloud Audit Logging will not contain map keys.
-class CloudAuditLogFieldChecker
-    : public proto_processing_lib::CloudAuditLogFieldCheckerInterface {
+class FieldMaskPathChecker
+    : public proto_processing_lib::FieldMaskPathCheckerInterface {
  public:
   // See FieldMaskTreeInterface class for description of the parameters.
-  CloudAuditLogFieldChecker(
+  FieldMaskPathChecker(
       const google::protobuf::Type* type,
       std::function<const google::protobuf::Type*(const std::string&)>
           type_finder);
-  CloudAuditLogFieldChecker(const CloudAuditLogFieldChecker&) = delete;
-  CloudAuditLogFieldChecker& operator=(const CloudAuditLogFieldChecker&) =
+  FieldMaskPathChecker(const FieldMaskPathChecker&) = delete;
+  FieldMaskPathChecker& operator=(const FieldMaskPathChecker&) =
       delete;
   // Adds a list of auditing field paths to this field checker. For example,
   // {"a.b", "c"} indicates that the root message can include only fields "a"
@@ -51,7 +51,7 @@ class CloudAuditLogFieldChecker
   absl::Status AddOrIntersectFieldPaths(
       const std::vector<std::string>& paths) override;
 
-  using CloudAuditLogFieldCheckerInterface::CheckField;
+  using FieldMaskPathCheckerInterface::CheckField;
   // Decides whether the given field path is included, partially included, or
   // excluded.
   //
@@ -77,4 +77,4 @@ class CloudAuditLogFieldChecker
 
 }  // namespace proto_processing_lib::proto_scrubber
 
-#endif  // THIRD_PARTY_PROTO_PROCESSING_LIB_SRC_PROTO_SCRUBBER_CLOUD_AUDIT_LOG_FIELD_CHECKER_H_
+#endif  // THIRD_PARTY_PROTO_PROCESSING_LIB_SRC_PROTO_SCRUBBER_FIELD_MASK_PATH_CHECKER_H_

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "proto_processing_lib/proto_scrubber/cloud_audit_log_field_checker.h"
+#include "proto_processing_lib/proto_scrubber/field_mask_path_checker.h"
 
 #include <functional>
 #include <string>
@@ -34,19 +34,19 @@ namespace {
 const std::string* GetMessageTypeName(const FieldMaskNode* node);
 }  // namespace
 
-CloudAuditLogFieldChecker::CloudAuditLogFieldChecker(
+FieldMaskPathChecker::FieldMaskPathChecker(
     const google::protobuf::Type* type,
     std::function<const google::protobuf::Type*(const std::string&)>
         type_finder)
     : field_mask_tree_(
           FactoryCreateFieldMaskTree(type, std::move(type_finder))) {}
 
-absl::Status CloudAuditLogFieldChecker::AddOrIntersectFieldPaths(
+absl::Status FieldMaskPathChecker::AddOrIntersectFieldPaths(
     const std::vector<std::string>& paths) {
   return field_mask_tree_->AddOrIntersectFieldPaths(paths);
 }
 
-FieldCheckResults CloudAuditLogFieldChecker::CheckField(
+FieldCheckResults FieldMaskPathChecker::CheckField(
     const std::vector<std::string>& path,
     const google::protobuf::Field* field) const {
   if (!field_mask_tree_->status().ok()) {

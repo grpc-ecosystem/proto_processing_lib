@@ -51,9 +51,9 @@ class FieldMaskTreeInterface : public proto_scrubber::FieldCheckerInterface {
   virtual const proto_scrubber::FieldMaskNode* root() const = 0;
 };
 
-// CloudAuditLogFieldCheckerInterface is an abstract class. Proto Processing
+// FieldMaskPathCheckerInterface is an abstract class. Proto Processing
 // Library provides its own implementation.
-class CloudAuditLogFieldCheckerInterface
+class FieldMaskPathCheckerInterface
     : public proto_scrubber::FieldCheckerInterface {
  public:
   // Adds a list of auditing field paths to this field checker. For example,
