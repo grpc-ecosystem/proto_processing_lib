@@ -4,6 +4,10 @@ common:ci --noshow_progress
 common:ci --noshow_loading_progress
 common:ci --test_output=errors
 
+# Don't pin clang in CI.
+build:ci --action_env=CC=clang
+build:ci --action_env=CXX=clang++
+
 # Required by envoy and its tests
 build --define=grpc_no_ares=true
 build --cxxopt=-std=c++17 --host_cxxopt=-std=c++17
