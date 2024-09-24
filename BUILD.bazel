@@ -21,6 +21,6 @@ cc_library(
         "//proto_processing_lib:factory_helper",
         "//proto_processing_lib:interface_util",
         "//proto_processing_lib/proto_scrubber",
-        "//proto_processing_lib/proto_scrubber:cloud_audit_log_field_checker",
+        "//proto_processing_lib/proto_scrubber:field_mask_path_checker",
     ],
 )

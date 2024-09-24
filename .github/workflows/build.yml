@@ -1,0 +1,23 @@
+name: Build
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches:
+    - main
+
+concurrency:
+  group: >-
+    ${{ github.event.inputs.head_ref || github.run_id }}
+
+
+jobs:
+  envoy:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+    - run: |
+        bazel build --config=ci //:all_libs

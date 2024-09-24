@@ -1,5 +1,9 @@
 # Placeholder file for Prow
 
+common:ci --noshow_progress
+common:ci --noshow_loading_progress
+common:ci --test_output=errors
+
 # Required by envoy and its tests
 build --define=grpc_no_ares=true
 build --cxxopt=-std=c++17 --host_cxxopt=-std=c++17
