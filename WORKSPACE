@@ -51,8 +51,8 @@ http_archive(
 
 http_archive(
     name = "com_google_protofieldextraction",
-    strip_prefix = "proto-field-extraction-e808da3acf5bd6d518e19e8afa20b4a9d0b2b599",  # Mar 20, 2024
-    url = "https://github.com/grpc-ecosystem/proto-field-extraction/archive/e808da3acf5bd6d518e19e8afa20b4a9d0b2b599.tar.gz",
+    strip_prefix = "proto-field-extraction-598807946f248917db4b7d2e7249de3e4eee0003",  # July 9, 2024
+    url = "https://github.com/grpc-ecosystem/proto-field-extraction/archive/598807946f248917db4b7d2e7249de3e4eee0003.tar.gz",
 )
 
 # -------- Load and call dependencies of underlying libraries --------
