@@ -15,9 +15,22 @@ concurrency:
 
 
 jobs:
-  envoy:
+  build_and_test:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
-    - run: |
+    - name: Download build dependencies
+      shell: bash
+      run: |
+        mkdir -p build_deps/clang-14
+        cd build_deps/clang-14
+        wget https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+        tar -xf clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz --strip-components 1
+        cd bin
+        echo "$(pwd)" >> $GITHUB_PATH
+    - name: Build :all_libs
+      run: |
         bazel build --config=ci //:all_libs
+    - name: Run tests
+      run: |
+        bazel test --config=ci ...
