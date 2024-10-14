@@ -72,7 +72,7 @@ class FieldMaskTree : public FieldMaskTreeInterface {
   // Returns OK if all "paths" are legal, otherwise returns INVALID_ARGUMENT and
   // the tree will be left in a broken state. Calling this method again on a
   // broken FieldMaskTree will yield an error of FAILED_PRECONDITION.
-  absl::Status AddOrIntersectFieldPaths(const std::vector<std::string>& paths);
+  absl::Status AddOrIntersectFieldPaths(const std::vector<std::string>& paths) override;
 
   // Checks if a field is on this tree. Returns "kInclude" if the field is on a
   // leaf node of the tree, "kPartial" if it's on a non-leaf node and "kExclude"
@@ -96,10 +96,10 @@ class FieldMaskTree : public FieldMaskTreeInterface {
   }
 
   // Returns the status of the tree.
-  absl::Status status() { return status_; }
+  absl::Status status() override { return status_; }
 
   // Returns root node of the tree.
-  const FieldMaskNode* root() const { return root_.get(); }
+  const FieldMaskNode* root() const override { return root_.get(); }
 
  private:
   // The root node of the FieldMask tree.

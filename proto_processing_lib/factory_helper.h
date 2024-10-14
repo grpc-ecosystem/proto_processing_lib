@@ -27,13 +27,6 @@
 namespace proto_processing_lib {
 
 // Factory Method to create UnknownFieldChecker.
-static const proto_processing_lib::proto_scrubber::FieldCheckerInterface*
-FactoryCreateUnknownFieldChecker() {
-  return proto_processing_lib::proto_scrubber::UnknownFieldChecker::
-      GetDefault();
-}
-
-// Factory Method to create UnknownFieldChecker.
 static std::unique_ptr<proto_processing_lib::FieldMaskTreeInterface>
 FactoryCreateFieldMaskTree(
     const google::protobuf::Type* type,
