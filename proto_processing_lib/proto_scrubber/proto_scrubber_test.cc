@@ -141,7 +141,7 @@ class FieldMaskScrubberTest : public ::testing::Test,
       ASSERT_TRUE(parser.ParseFromString(expected, &expected_message));
     }
     ScrubberTestMessage result_message;
-    result_message.ParseFromCord(cord_message_data_.Cord());
+    result_message.ParseFromString(cord_message_data_.Cord());
 
     EXPECT_THAT(result_message, EqualsProto(expected_message));
   }
@@ -809,7 +809,7 @@ TEST_P(FieldMaskScrubberTest, ResultCanBeScrubbedAgain) {
   ScrubberTestMessage expected_message;
   QCHECK(parser.ParseFromString("wkt_int32: { value: -4 }", &expected_message));
   ScrubberTestMessage result_message;
-  result_message.ParseFromCord(cord_message_data().Cord());
+  result_message.ParseFromString(cord_message_data().Cord());
 
   EXPECT_THAT(result_message, EqualsProto(expected_message));
 
@@ -853,7 +853,7 @@ TEST_P(FieldMaskScrubberTest, UnknownFieldsShouldBeIncluded) {
   ScrubberTestMessage expected_message;
   QCHECK(parser.ParseFromString("wkt_int32: { value: -4 }", &expected_message));
   ScrubberTestMessage result_message;
-  result_message.ParseFromCord(cord_message_data().Cord());
+  result_message.ParseFromString(cord_message_data().Cord());
 
   EXPECT_THAT(result_message, EqualsProto(expected_message));
 }
@@ -1162,7 +1162,7 @@ TEST_P(FieldMaskScrubberTest, AddFieldFilterWithUnknownFieldsShouldBeIncluded) {
   QCHECK(parser.ParseFromString("wkt_int32: { value: -4 }", &expected_message));
 
   ScrubberTestMessage result_message;
-  result_message.ParseFromCord(cord_message_data().Cord());
+  result_message.ParseFromString(cord_message_data().Cord());
 
   EXPECT_THAT(result_message, EqualsProto(expected_message));
 }
